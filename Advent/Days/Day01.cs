@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Advent.Util;
 
 namespace Advent.Days {
     [Day(2020, 1)]
@@ -12,12 +12,13 @@ namespace Advent.Days {
         }
 
         public override string PartOne(string input) {
-            var nums = input.Split('\n').Select(n => Int32.Parse(n)).ToList();
+            var nums = input.AsInts().ToList();
+
             foreach(var n1 in nums) {
-                var n2 = 2020 - n1;
-                if (nums.Contains(n2)) {
+                if (FindMatch(nums, 2020, n1, out var n2)) {
                     var product = n1 * n2;
                     Console.WriteLine($"Found: {n1} * {n2} = {product}");
+
                     return product.ToString();
                 }
             }
@@ -27,7 +28,7 @@ namespace Advent.Days {
 
         public override string PartTwo(string input) {
             var product = 0;
-            var nums = input.Split('\n').Select(n => Int32.Parse(n)).ToList();
+            var nums = input.AsInts().ToList();
 
             foreach (var n1 in nums) {
                 foreach (var n2 in nums) {
@@ -35,12 +36,30 @@ namespace Advent.Days {
                         if (n1 + n2 + n3 == 2020) {
                             product = n1 * n2 * n3;
                             Console.WriteLine("{0} + {1} + {2} = 2020, product is {3}", n1, n2, n3, product);
+
+                            return product.ToString();
                         }
                     }
                 }
             }
 
-            return product.ToString();
+            return "Not found";
+        }
+
+        /// <summary>
+        /// Looks through nums to find the difference between sum and n1,
+        /// returns true and that number in out n2. False if not found.
+        /// </summary>
+        private bool FindMatch(List<int> nums, int sum, int n1, out int n2) {
+            var target = sum - n1;
+
+            if (nums.Contains(target)) {
+                n2 = target;
+                return true;
+            }
+
+            n2 = 0;
+            return false;
         }
     }
 }
