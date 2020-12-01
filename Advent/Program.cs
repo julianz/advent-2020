@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 namespace Advent {
     class Program {
         static readonly Regex DayPattern = new Regex(@"^(?<daynum>\d+)(?<daypart>[ab])$", RegexOptions.IgnoreCase);
+        static Config Config;
 
         static void Main(string[] args) {
             if (args.Length == 0) {
@@ -19,11 +21,9 @@ namespace Advent {
             // Load configuration
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("settings.json");
-            var config = builder.Build().Get<Config>();
+            Config = builder.Build().Get<Config>();
 
-            Console.WriteLine(config.Session);
-
-            // expecting a value like 1a or 12b
+            // Expecting a value like 1a or 12b
             var dayspec = args[0];
             var match = DayPattern.Match(dayspec);
 
@@ -32,7 +32,7 @@ namespace Advent {
                 var part = match.Groups["daypart"].Value.ToDayPart();
                 
                 // Create our day object
-                var dayInstance = GetDayInstance(config.Year, day);
+                var dayInstance = GetDayInstance(Config.Year, day);
 
                 if (dayInstance == null) {
                     UsageAndExit($"Day {day} could not be found");
@@ -42,7 +42,7 @@ namespace Advent {
                 var input = "";
 
                 if (dayInstance.NeedsInput) {
-                    input = GetInputForDay(config.InputDirectory, day);
+                    input = GetInputForDay(day);
                 }
 
                 // Run the right day part
@@ -91,16 +91,31 @@ namespace Advent {
             }
         }
 
-        static string GetInputForDay(string path, int day) {
+        static string GetInputForDay(int day) {
             // Create the input filename
-            var inputPath = Path.Combine(Path.GetFullPath(path), $"day{day:D2}.txt");
+            var inputPath = Path.Combine(Path.GetFullPath(Config.InputDirectory), $"day{day:D2}.txt");
             Console.WriteLine("Loading input from " + inputPath);
 
-            if (File.Exists(inputPath)) {
-                return File.ReadAllText(inputPath);
-            } else {
-                throw new NotImplementedException("Still need to write the input downloader");
+            if (!File.Exists(inputPath)) {
+                DownloadInputForDay(day, inputPath);
             }
+
+            return File.ReadAllText(inputPath);
+        }
+
+        private static bool DownloadInputForDay(int day, string downloadPath) {
+            var url = $"https://adventofcode.com/{Config.Year}/day/{day}/input";
+
+            if (Config.SessionCookie == "") {
+                throw new InvalidDataException("You need to put the session cookie in the settings.json file");
+            }
+
+            using var client = new WebClient();
+            client.Headers.Add(HttpRequestHeader.Cookie, Config.SessionCookie);
+            Console.WriteLine("Downloading input file from " + url);
+            client.DownloadFile(url, downloadPath);
+
+            return true;
         }
 
         static (string result, long elapsed) RunDay(string input, DayBase runner, DayPart part) {
