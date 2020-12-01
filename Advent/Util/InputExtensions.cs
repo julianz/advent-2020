@@ -8,7 +8,7 @@ namespace Advent.Util {
     /// </summary>
     public static class InputExtensions {
         public static IEnumerable<string> AsLines(this string input) {
-            return input.Trim().Split('\n', StringSplitOptions.None);
+            return input.Trim().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         public static IEnumerable<int> AsInts(this string input) {
