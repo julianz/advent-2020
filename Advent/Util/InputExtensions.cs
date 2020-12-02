@@ -18,11 +18,5 @@ namespace Advent.Util {
         public static IEnumerable<long> AsLongs(this string input) {
             return input.AsLines().Select(n => Int64.Parse(n));
         }
-
-        public static IEnumerable<InputBase> AsObjects(this string input) {
-            return input.AsLines().Select(s => {
-                return new InputBase(s);
-            });
-        }
     }
 }
