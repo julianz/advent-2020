@@ -51,7 +51,7 @@ namespace Advent {
                 (var result, var elapsed) = RunDay(input, dayInstance, part);
 
                 // Output the results
-                Console.WriteLine($"ELAPSED: {elapsed}ms");
+                Console.WriteLine($"ELAPSED: {elapsed.Ticks / 10000.0}ms");
                 Console.WriteLine($"RESULT : {result}");
 
             } else {
@@ -118,7 +118,7 @@ namespace Advent {
             return true;
         }
 
-        static (string result, long elapsed) RunDay(string input, DayBase runner, DayPart part) {
+        static (string result, TimeSpan elapsed) RunDay(string input, DayBase runner, DayPart part) {
             string result;
             var sw = Stopwatch.StartNew();
 
@@ -128,7 +128,8 @@ namespace Advent {
                 result = runner.PartTwo(input);
             }
 
-            return (result, sw.ElapsedMilliseconds);
+            sw.Stop();
+            return (result, sw.Elapsed);
         }
     }
 }
