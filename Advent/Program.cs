@@ -28,30 +28,31 @@ namespace Advent {
             var match = DayPattern.Match(dayspec);
 
             if (match.Success) {
+                var year = Config.DefaultYear;
                 var day = Int32.Parse(match.Groups["daynum"].Value);
                 var part = match.Groups["daypart"].Value.ToDayPart();
                 
                 // Create our day object
-                var dayInstance = GetDayInstance(Config.Year, day);
+                var dayInstance = GetDayInstance(year, day);
 
                 if (dayInstance == null) {
-                    UsageAndExit($"Day {day} could not be found");
+                    UsageAndExit($"Code for {year} day {day} could not be found");
                 }
 
                 // If we need input, get it
                 var input = "";
 
                 if (dayInstance.NeedsInput) {
-                    input = GetInputForDay(day);
+                    input = GetInputForDay(year, day);
                 }
 
                 // Run the right day part
-                Console.WriteLine($"Running day {day} {part}");
+                Console.WriteLine($"Running {year} day {day} {part}" + Environment.NewLine);
 
                 (var result, var elapsed) = RunDay(input, dayInstance, part);
 
                 // Output the results
-                Console.WriteLine($"ELAPSED: {elapsed.Ticks / 10000.0}ms");
+                Console.WriteLine(Environment.NewLine + $"ELAPSED: {elapsed.Ticks / 10000.0}ms");
                 Console.WriteLine($"RESULT : {result}");
 
             } else {
@@ -91,20 +92,20 @@ namespace Advent {
             }
         }
 
-        static string GetInputForDay(int day) {
+        static string GetInputForDay(int year, int day) {
             // Create the input filename
-            var inputPath = Path.Combine(Path.GetFullPath(Config.InputDirectory), $"day{day:D2}.txt");
+            var inputPath = Path.Combine(Path.GetFullPath(Config.InputDirectory), year.ToString(), $"day{day:D2}.txt");
             Console.WriteLine("Loading input from " + inputPath);
 
             if (!File.Exists(inputPath)) {
-                DownloadInputForDay(day, inputPath);
+                DownloadInputForDay(year, day, inputPath);
             }
 
             return File.ReadAllText(inputPath);
         }
 
-        private static bool DownloadInputForDay(int day, string downloadPath) {
-            var url = $"https://adventofcode.com/{Config.Year}/day/{day}/input";
+        private static bool DownloadInputForDay(int year, int day, string downloadPath) {
+            var url = $"https://adventofcode.com/{year}/day/{day}/input";
 
             if (Config.SessionCookie == "") {
                 throw new InvalidDataException("You need to put the session cookie in the settings.json file");
