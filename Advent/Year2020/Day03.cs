@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Advent.Util;
 
-namespace Advent.Days {
+namespace Advent.Year2020 {
     [Day(2020, 3)]
     public class Day03 : DayBase {
         public override string PartOne(string input) {

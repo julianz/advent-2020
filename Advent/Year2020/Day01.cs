@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Advent.Util;
 
-namespace Advent.Days {
+namespace Advent.Year2020 {
     [Day(2020, 1)]
     public class Day01 : DayBase {
 
@@ -13,6 +13,7 @@ namespace Advent.Days {
 
         public override string PartOne(string input) {
             var nums = input.AsInts().ToList();
+            nums.Sort();
 
             foreach(var n1 in nums) {
                 if (FindMatch(nums, 2020, n1, out var n2)) {
