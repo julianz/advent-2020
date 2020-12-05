@@ -39,34 +39,35 @@ namespace Advent.Year2020 {
         }
 
         public override string PartTwo(string input) {
-            input = @"eyr:1972 cid:100
-hcl:#18171d ecl:amb hgt:170 pid:186cm iyr:2018 byr:1926
+//            input = @"eyr:1972 cid:100
+//hcl:#18171d ecl:amb hgt:170 pid:186cm iyr:2018 byr:1926
 
-iyr:2019
-hcl:#602927 eyr:1967 hgt:170cm
-ecl:grn pid:012533040 byr:1946
+//iyr:2019
+//hcl:#602927 eyr:1967 hgt:170cm
+//ecl:grn pid:012533040 byr:1946
 
-hcl:dab227 iyr:2012
-ecl:brn hgt:182cm pid:021572410 eyr:2020 byr:1992 cid:277
+//hcl:dab227 iyr:2012
+//ecl:brn hgt:182cm pid:021572410 eyr:2020 byr:1992 cid:277
 
-hgt:59cm ecl:zzz
-eyr:2038 hcl:74454a iyr:2023
-pid:3556412378 byr:2007
+//hgt:59cm ecl:zzz
+//eyr:2038 hcl:74454a iyr:2023
+//pid:3556412378 byr:2007
 
-pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980
-hcl:#623a2f
+//pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980
+//hcl:#623a2f
 
-eyr:2029 ecl:blu cid:129 byr:1989
-iyr:2014 pid:896056539 hcl:#a97842 hgt:165cm
+//eyr:2029 ecl:blu cid:129 byr:1989
+//iyr:2014 pid:896056539 hcl:#a97842 hgt:165cm
 
-hcl:#888785
-hgt:164cm byr:2001 iyr:2015 cid:88
-pid:545766238 ecl:hzl
-eyr:2022
+//hcl:#888785
+//hgt:164cm byr:2001 iyr:2015 cid:88
+//pid:545766238 ecl:hzl
+//eyr:2022
 
-iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
-";
+//iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
+//";
 
+            input = input.Replace("\r\n", "\n");
             var passports = input.Split("\n\n", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
             var valid = 0;
@@ -85,8 +86,8 @@ iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
             static readonly List<string> ValidEyeColours =
                 new List<string> { "amb", "blu", "brn", "gry", "grn", "hzl", "oth" };
 
-            static readonly Regex HeightPattern = new Regex(@"^(?<height>\d+)(?<units>(in|cm]))$");
-            static readonly Regex HairColourPattern = new Regex(@"^#[0-9A-F]{6}$");
+            static readonly Regex HeightPattern = new Regex(@"^(?<height>\d+)(?<units>(in|cm))$");
+            static readonly Regex HairColourPattern = new Regex(@"^\#[0-9A-F]{6}$", RegexOptions.IgnoreCase);
             static readonly Regex PassportIdPattern = new Regex(@"^[0-9]{9}$");
 
             readonly Dictionary<string, string> fields;
@@ -94,14 +95,16 @@ iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
             public Passport(string input) {
                 fields = new Dictionary<string, string>(ValidKeys.Count);
 
-                var fieldData = input.Split(" ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                var fieldData = input.Split(new string[] { "\r\n", "\n", " " }, 
+                    StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
                 foreach (var f in fieldData) {
-                    Console.WriteLine(f);
+                    //Out.Log(f);
                     var bits = f.Split(':', StringSplitOptions.TrimEntries);
                     if (ValidKeys.Contains(bits[0])) {
                         fields[bits[0]] = bits[1];
                     } else {
-                        Console.WriteLine($"Discarding invalid field {f}");
+                        Out.Log($"Discarding invalid field {f}");
                     }
                 }
             }
@@ -118,7 +121,6 @@ iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
                     return true;
                 }
 
-                Console.WriteLine("Not valid for part 1");
                 return false;
             }
 
@@ -147,7 +149,6 @@ iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
 
             private bool ValidateHeight(string input) {
                 var match = HeightPattern.Match(input);
-                Console.WriteLine($"{input} - {match.Success}");
 
                 if (match.Success) {
                     var height = Int32.Parse(match.Groups["height"].Value);
