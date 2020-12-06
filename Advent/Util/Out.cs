@@ -7,6 +7,10 @@ namespace Advent.Util {
             Console.WriteLine(message);
         }
 
+        public static void Log(int value) {
+            Console.WriteLine(value);
+        }
+
         public static void NewLine(int count = 1) {
             for (var n = 0; n < count; n++) {
                 Console.WriteLine();
