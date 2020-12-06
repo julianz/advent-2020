@@ -25,14 +25,11 @@ namespace Advent {
                 .AddJsonFile("settings.json");
             Config = builder.Build().Get<Config>();
 
-            // Get the command line params
+            // Read the command line params
             //  - year is optional, otherwise we use the default from config
-            //  - day must be expressed like 1a or 12b
+            //  - day must be expressed in the form 1a or 12b
 
-            var day = new DaySpec
-            {
-                Year = Config.DefaultYear
-            };
+            var day = new DaySpec { Year = Config.DefaultYear };
 
             foreach (var arg in args) {
                 if (YearPattern.IsMatch(arg)) {
@@ -48,9 +45,9 @@ namespace Advent {
             }
 
             if (!day.IsSet) {
-                UsageAndExit();
+                UsageAndExit("Day was not specified on the command line");
             }
-                
+
             // Create our day object
             var dayInstance = GetDayInstance(day);
 
