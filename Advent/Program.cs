@@ -7,10 +7,12 @@ using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
+using Advent.Util;
 
 namespace Advent {
     class Program {
         static readonly Regex DayPattern = new Regex(@"^(?<daynum>\d+)(?<daypart>[ab])$", RegexOptions.IgnoreCase);
+        static readonly Regex YearPattern = new Regex(@"^20[12]\d$");
         static Config Config;
 
         static void Main(string[] args) {
@@ -23,49 +25,61 @@ namespace Advent {
                 .AddJsonFile("settings.json");
             Config = builder.Build().Get<Config>();
 
-            // Expecting a value like 1a or 12b
-            var dayspec = args[0];
-            var match = DayPattern.Match(dayspec);
+            // Get the command line params
+            //  - year is optional, otherwise we use the default from config
+            //  - day must be expressed like 1a or 12b
 
-            if (match.Success) {
-                var year = Config.DefaultYear;
-                var day = Int32.Parse(match.Groups["daynum"].Value);
-                var part = match.Groups["daypart"].Value.ToDayPart();
-                
-                // Create our day object
-                var dayInstance = GetDayInstance(year, day);
+            var day = new DaySpec
+            {
+                Year = Config.DefaultYear
+            };
 
-                if (dayInstance == null) {
-                    UsageAndExit($"Code for {year} day {day} could not be found");
+            foreach (var arg in args) {
+                if (YearPattern.IsMatch(arg)) {
+                    day.Year = Int32.Parse(YearPattern.Match(arg).Value);
+                } else {
+                    var match = DayPattern.Match(arg);
+
+                    if (match.Success) {
+                        day.Day = Int32.Parse(match.Groups["daynum"].Value);
+                        day.Part = match.Groups["daypart"].Value.ToDayPart();
+                    }
                 }
+            }
 
-                // If we need input, get it
-                var input = "";
-
-                if (dayInstance.NeedsInput) {
-                    input = GetInputForDay(year, day);
-                }
-
-                // Run the right day part
-                Console.WriteLine($"Running {year} day {day} {part}" + Environment.NewLine);
-
-                (var result, var elapsed) = RunDay(input, dayInstance, part);
-
-                // Output the results
-                Console.WriteLine(Environment.NewLine + $"ELAPSED: {elapsed.Ticks / 10000.0}ms");
-                Console.WriteLine($"RESULT : {result}");
-
-            } else {
+            if (!day.IsSet) {
                 UsageAndExit();
             }
+                
+            // Create our day object
+            var dayInstance = GetDayInstance(day);
+
+            if (dayInstance == null) {
+                UsageAndExit($"Code for {day.Year} day {day.Day} could not be found");
+            }
+
+            // If we need input, get it
+            var input = "";
+
+            if (dayInstance.NeedsInput) {
+                input = GetInputForDay(day);
+            }
+
+            // Run the right day part
+            (var result, var elapsed) = RunDay(day, dayInstance, input);
+
+            // Output the results
+            Out.NewLine();
+            Out.Log($"ELAPSED: {elapsed.Ticks / 10000.0}ms");
+            Out.Log($"RESULT : {result}");
         }
 
         static void UsageAndExit(string message = null) {
             if (message != null) {
-                Console.WriteLine(message);
+                Out.Log(message);
             }
 
-            Console.WriteLine("ERROR: You must specify a day between 1 and 25 and a part e.g. 3a, 12b");
+            Out.Log("ERROR: You must specify a day between 1 and 25 and a part e.g. 3a, 12b");
             Environment.Exit(1);
         }
 
@@ -81,9 +95,9 @@ namespace Advent {
                                              t.GetCustomAttribute<DayAttribute>().Day == day.Day);
         }
 
-        static DayBase GetDayInstance(int year, int day) {
+        static DayBase GetDayInstance(DaySpec day) {
             try {
-                var dayType = GetDayType(new DayAttribute(year, day));
+                var dayType = GetDayType(new DayAttribute(day.Year, day.Day));
                 var instance = (DayBase)Activator.CreateInstance(dayType);
                 return instance;
             } catch (InvalidOperationException) {
@@ -92,20 +106,26 @@ namespace Advent {
             }
         }
 
-        static string GetInputForDay(int year, int day) {
-            // Create the input filename
-            var inputPath = Path.Combine(Path.GetFullPath(Config.InputDirectory), year.ToString(), $"day{day:D2}.txt");
-            Console.WriteLine("Loading input from " + inputPath);
+        static string GetInputForDay(DaySpec day) {
+            // Create the input directory if required
+            var inputDir = Path.Combine(Path.GetFullPath(Config.InputDirectory), day.Year.ToString());
+            if (!Directory.Exists(inputDir)) {
+                Out.Log($"Creating directory {inputDir}");
+                Directory.CreateDirectory(inputDir);
+            }
+            
+            var inputPath = Path.Combine(inputDir, $"day{day.Day:D2}.txt");
+            Out.Log("Loading input from " + inputPath);
 
             if (!File.Exists(inputPath)) {
-                DownloadInputForDay(year, day, inputPath);
+                DownloadInputForDay(day, inputPath);
             }
 
             return File.ReadAllText(inputPath);
         }
 
-        private static bool DownloadInputForDay(int year, int day, string downloadPath) {
-            var url = $"https://adventofcode.com/{year}/day/{day}/input";
+        private static bool DownloadInputForDay(DaySpec day, string downloadPath) {
+            var url = $"https://adventofcode.com/{day.Year}/day/{day.Day}/input";
 
             if (Config.SessionCookie == "") {
                 throw new InvalidDataException("You need to put the session cookie in the settings.json file");
@@ -113,20 +133,22 @@ namespace Advent {
 
             using var client = new WebClient();
             client.Headers.Add(HttpRequestHeader.Cookie, Config.SessionCookie);
-            Console.WriteLine("Downloading input file from " + url);
+            Out.Log("Downloading input file from " + url);
             client.DownloadFile(url, downloadPath);
 
             return true;
         }
 
-        static (string result, TimeSpan elapsed) RunDay(string input, DayBase runner, DayPart part) {
+        static (string result, TimeSpan elapsed) RunDay(DaySpec day, DayBase instance, string input) {
+            Out.Log($"Running {day}" + Environment.NewLine);
+
             string result;
             var sw = Stopwatch.StartNew();
 
-            if (part == DayPart.PartOne) {
-                result = runner.PartOne(input);
+            if (day.Part == DayPart.PartOne) {
+                result = instance.PartOne(input);
             } else {
-                result = runner.PartTwo(input);
+                result = instance.PartTwo(input);
             }
 
             sw.Stop();

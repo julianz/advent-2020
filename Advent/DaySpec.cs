@@ -9,6 +9,17 @@ namespace Advent {
         PartTwo
     }
 
+    public class DaySpec {
+        public int Year { get; set; }
+        public int Day { get; set; } = 0;
+        public DayPart Part { get; set; }
+
+        public bool IsSet => (Day >= 1 && Day <= 25);
+
+        public override string ToString() =>
+            $"{Year} day {Day} part {Part.ToPartNumber()}";
+    }
+
     public static class DayPartExtensions {
         public static DayPart ToDayPart(this string dayPartLetter) {
             return dayPartLetter.ToLower() switch
@@ -18,6 +29,9 @@ namespace Advent {
                 _ => throw new ArgumentOutOfRangeException(nameof(dayPartLetter))
             };
         }
+
+        public static int ToPartNumber(this DayPart part) =>
+            (part == DayPart.PartOne) ? 1 : 2;
     }
 }
 
