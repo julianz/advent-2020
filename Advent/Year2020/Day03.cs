@@ -28,18 +28,6 @@ namespace Advent.Year2020 {
         }
 
         public override string PartTwo(string input) {
-//            input = @"..##.......
-//#...#...#..
-//.#....#..#.
-//..#.#...#.#
-//.#...##..#.
-//..#.##.....
-//.#.#.#....#
-//.#........#
-//#.##...#...
-//#...##....#
-//.#..#...#.#";
-
             var map = input.AsLines().ToList();
             var height = map.Count;
             var slopes = new List<(int across, int down)>

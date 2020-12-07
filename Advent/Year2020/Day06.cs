@@ -10,9 +10,7 @@ namespace Advent.Year2020 {
     [Day(2020, 6)]
     public class Day06 : DayBase {
         public override string PartOne(string input) {
-            input = input.Replace("\r\n", "\n");
-            var groups = input.Split("\n\n", 
-                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var groups = input.SplitOnBlankLines();
             var total = 0;
 
             foreach (var group in groups) {
@@ -30,9 +28,7 @@ namespace Advent.Year2020 {
         }
 
         public override string PartTwo(string input) {
-            input = input.Replace("\r\n", "\n");
-            var groups = input.Split("\n\n",
-                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            var groups = input.SplitOnBlankLines();
             var total = 0;
 
             foreach (var group in groups) {

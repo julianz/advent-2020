@@ -12,6 +12,12 @@ namespace Advent.Util {
                 StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
+        public static IEnumerable<string> SplitOnBlankLines(this string input) {
+            input = input.Replace("\r\n", "\n");
+            return input.Split("\n\n",
+                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        }
+
         public static IEnumerable<int> AsInts(this string input) {
             return input.AsLines().Select(n => Int32.Parse(n));
         }
