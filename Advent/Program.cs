@@ -67,16 +67,16 @@ namespace Advent {
 
             // Output the results
             Out.NewLine();
-            Out.Log($"ELAPSED: {elapsed.Ticks / 10000.0}ms");
-            Out.Log($"RESULT : {result}");
+            Out.Print($"ELAPSED: {elapsed.Ticks / 10000.0}ms");
+            Out.Print($"RESULT : {result}");
         }
 
         static void UsageAndExit(string message = null) {
             if (message != null) {
-                Out.Log(message);
+                Out.Print(message);
             }
 
-            Out.Log("ERROR: You must specify a day between 1 and 25 and a part e.g. 3a, 12b");
+            Out.Print("ERROR: You must specify a day between 1 and 25 and a part e.g. 3a, 12b");
             Environment.Exit(1);
         }
 
@@ -107,12 +107,12 @@ namespace Advent {
             // Create the input directory if required
             var inputDir = Path.Combine(Path.GetFullPath(Config.InputDirectory), day.Year.ToString());
             if (!Directory.Exists(inputDir)) {
-                Out.Log($"Creating directory {inputDir}");
+                Out.Print($"Creating directory {inputDir}");
                 Directory.CreateDirectory(inputDir);
             }
             
             var inputPath = Path.Combine(inputDir, $"day{day.Day:D2}.txt");
-            Out.Log("Loading input from " + inputPath);
+            Out.Print("Loading input from " + inputPath);
 
             if (!File.Exists(inputPath)) {
                 DownloadInputForDay(day, inputPath);
@@ -130,14 +130,14 @@ namespace Advent {
 
             using var client = new WebClient();
             client.Headers.Add(HttpRequestHeader.Cookie, Config.SessionCookie);
-            Out.Log("Downloading input file from " + url);
+            Out.Print("Downloading input file from " + url);
             client.DownloadFile(url, downloadPath);
 
             return true;
         }
 
         static (string result, TimeSpan elapsed) RunDay(DaySpec day, DayBase instance, string input) {
-            Out.Log($"Running {day}" + Environment.NewLine);
+            Out.Print($"Running {day}" + Environment.NewLine);
 
             string result;
             var sw = Stopwatch.StartNew();

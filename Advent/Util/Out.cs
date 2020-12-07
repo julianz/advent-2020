@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Advent.Util {
     public static class Out {
-        public static void Log(string message) {
+        public static void Print(string message) {
             Console.WriteLine(message);
         }
 
-        public static void Log(int value) {
+        public static void Print(int value) {
             Console.WriteLine(value);
         }
 

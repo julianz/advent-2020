@@ -28,7 +28,7 @@ namespace Advent.Year2015 {
 
                     if (hash.StartsWith("00000")) {
                         found = true;
-                        Out.Log(hash);
+                        Out.Print(hash);
                         break;
                     }
 
@@ -51,7 +51,7 @@ namespace Advent.Year2015 {
 
                     if (hash.StartsWith("000000")) {
                         found = true;
-                        Out.Log(hash);
+                        Out.Print(hash);
                         break;
                     }
 
