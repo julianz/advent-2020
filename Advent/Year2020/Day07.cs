@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Advent.Util;
 
 namespace Advent.Year2020 {
@@ -26,7 +22,7 @@ namespace Advent.Year2020 {
             var rules = input.AsLines();
             foreach (var rule in rules) {
                 var split = rule.Split("bags contain", StringSplitOptions.TrimEntries);
-                var containercolour = split[0];
+                var containerColour = split[0];
                 var contained = split[1].Split(",", StringSplitOptions.TrimEntries);
 
                 if (contained.Length == 1 && contained[0].StartsWith("no other bags")) {
@@ -35,14 +31,14 @@ namespace Advent.Year2020 {
                 }
 
                 foreach (var bag in contained) {
-                    var bagsplit = bag.Split(" ");
-                    var bagcolour = bagsplit[1] + " " + bagsplit[2];
+                    var bagSplit = bag.Split(" ");
+                    var bagColour = bagSplit[1] + " " + bagSplit[2];
 
-                    if (!Bags.ContainsKey(bagcolour)) {
-                        Bags[bagcolour] = new HashSet<string>();
+                    if (!Bags.ContainsKey(bagColour)) {
+                        Bags[bagColour] = new HashSet<string>();
                     }
 
-                    Bags[bagcolour].Add(containercolour);
+                    Bags[bagColour].Add(containerColour);
                 }
             }
 
