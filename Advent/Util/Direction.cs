@@ -9,7 +9,11 @@ namespace Advent.Util {
     }
 
     public static class DirectionExtensions {
-        public static Direction TurnLeft(this Direction direction) {
+        public static Direction TurnLeft(this Direction direction, int times = 1) {
+            if (times > 1) {
+                direction = direction.TurnLeft(times - 1);
+            }
+
             return direction switch
             {
                 Direction.Up => Direction.Left,
@@ -20,7 +24,11 @@ namespace Advent.Util {
             };
         }
 
-        public static Direction TurnRight(this Direction direction) {
+        public static Direction TurnRight(this Direction direction, int times = 1) {
+            if (times > 1) {
+                direction = direction.TurnRight(times - 1);
+            }
+
             return direction switch
             {
                 Direction.Up => Direction.Right,

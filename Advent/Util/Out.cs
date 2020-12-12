@@ -11,6 +11,10 @@ namespace Advent.Util {
             Console.WriteLine(value);
         }
 
+        public static void Print(bool value) {
+            Console.WriteLine(value);
+        }
+
         public static void NewLine(int count = 1) {
             for (var n = 0; n < count; n++) {
                 Console.WriteLine();
