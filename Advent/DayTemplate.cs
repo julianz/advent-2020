@@ -10,11 +10,11 @@ namespace Advent {
     //[Day(2020, 1)]
     public class DayTemplate : DayBase {
         public override string PartOne(string input) {
-            return "";
+            throw new PuzzleNotSolvedException();
         }
 
         public override string PartTwo(string input) {
-            return "";
+            throw new PuzzleNotSolvedException();
         }
     }
 }
