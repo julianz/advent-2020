@@ -18,6 +18,11 @@ namespace Advent.Util {
                 StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
+        public static IEnumerable<string> SplitBySeparator(this string input, string separator = ",") {
+            return input.Split(separator,
+                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        }
+
         public static IEnumerable<int> AsInts(this string input) {
             return input.AsLines().Select(n => Int32.Parse(n));
         }

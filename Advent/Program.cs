@@ -20,10 +20,14 @@ namespace Advent {
                 UsageAndExit();
             }
 
-            // Load configuration
+            // Load configuration and sort out current working directory
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("settings.json");
             Config = builder.Build().Get<Config>();
+
+            if (Config.ApplicationDirectory == "") {
+                Config.ApplicationDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            }
 
             // Read the command line params
             //  - year is optional, otherwise we use the default from config
@@ -105,7 +109,7 @@ namespace Advent {
 
         static string GetInputForDay(DaySpec day) {
             // Create the input directory if required
-            var inputDir = Path.Combine(Path.GetFullPath(Config.InputDirectory), day.Year.ToString());
+            var inputDir = Path.Combine(Config.ApplicationDirectory, Config.InputDirectory, day.Year.ToString());
             if (!Directory.Exists(inputDir)) {
                 Out.Print($"Creating directory {inputDir}");
                 Directory.CreateDirectory(inputDir);
