@@ -24,11 +24,11 @@ namespace Advent.Util {
         }
 
         public static IEnumerable<int> AsInts(this string input) {
-            return input.AsLines().Select(n => Int32.Parse(n));
+            return input.AsLines().Select(Int32.Parse);
         }
 
         public static IEnumerable<long> AsLongs(this string input) {
-            return input.AsLines().Select(n => Int64.Parse(n));
+            return input.AsLines().Select(Int64.Parse);
         }
     }
 }
