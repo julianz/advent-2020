@@ -37,38 +37,40 @@ namespace Advent.Year2020 {
         }
 
         public override string PartTwo(string input) {
-            var test1 = @"16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4";
-            var test2 = @"28, 33, 18, 42, 31, 14, 46, 20, 48, 47, 24, 23, 49, 45, 19, 38, 39, 11, 1, 32, 25, 35, 8, 17, 7, 9, 4, 2, 34, 10, 3";
+            //var test1 = @"16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4";
+            //var test2 = @"28, 33, 18, 42, 31, 14, 46, 20, 48, 47, 24, 23, 49, 45, 19, 38, 39, 11, 1, 32, 25, 35, 8, 17, 7, 9, 4, 2, 34, 10, 3";
 
-            //var nums = input.AsInts().ToList();
-            var nums = test1.Split(", ").Select(n => Int32.Parse(n)).ToList();
+            var nums = input.AsInts().ToList();
             nums.Sort();
 
             nums.Insert(0, 0);
             nums.Add(nums.Last() + 3);
 
             var result = CountPaths(0, nums);
-
-            throw new PuzzleNotSolvedException();
+            return result.ToString();
         }
 
-        long CountPaths(int fromIndex, List<int> list) {
-            var cache = new Dictionary<int, long>();
-            
-            if (!cache.ContainsKey(fromIndex)) {
-                cache[fromIndex] = CountPathsInner(fromIndex, list);
-                Out.Print($"{fromIndex}: {cache[fromIndex]}");
+        private readonly Dictionary<int, long> Cache = new Dictionary<int, long>();
+
+        long CountPaths(int @from, List<int> steps) {
+            if (!Cache.ContainsKey(@from)) {
+                Cache[@from] = CountPathsInner(@from, steps);
             }
 
-            return cache[fromIndex];
+            return Cache[@from];
         }
 
-        long CountPathsInner(int fromIndex, List<int> list) {
-            if (fromIndex == list.Count - 1) {
+        long CountPathsInner(int from, List<int> steps) {
+            // find all the options for next step from here
+            var options = steps.Where(n => n > from && n - from <= 3).ToList();
+            //Out.Print($"{from} : ({String.Join(", ", options)})");
+
+            if (options.Count == 0) {
+                // only one option here
                 return 1;
             }
 
-            return 0;
+            return options.Select(o => CountPaths(o, steps)).Sum();
         }
     }
 }
