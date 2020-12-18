@@ -32,42 +32,65 @@ namespace Advent.Year2020 {
         }
 
         public override string PartTwo(string input) {
-            input = @"1000186
-                    17,x,x,x,x,x,x,x,x,x,x,37,x,x,x,x,x,907,x,x,x,x,x,x,x,x,x,x,x,19,x,x,x,x,x,x,x,x,x,x,23,x,x,x,x,x,29,x,653,x,x,x,x,x,x,x,x,x,41,x,x,13";
+            /*
+             * The earliest timestamp that matches the list 17,x,13,19 is 3417.
+             * 67,7,59,61 first occurs at timestamp 754018.
+             * 67,x,7,59,61 first occurs at timestamp 779210.
+             * 67,7,x,59,61 first occurs at timestamp 1261476.
+             * 1789,37,47,1889 first occurs at timestamp 1202161486.
+             */
 
-            input = @"939
-                    7,13,x,x,59,x,31,19";
-
-            /**
-             * find the biggest number in the list (59) => b
-             * work through multiples of b and then work back and forwards through the 
-             * list to satisfy the other conditions
-             * 
-             * e.g. at t = 59, is there a multiple of 31 at 61 and a multiple of 19 at 62? (no)
-             * - should probably check the multiples in descending order as they're less likely to coincide
-             * so find largest with offset 0, then work down the list and build a list of n and relative offset to check
-             **/
             var departures = input.AsLines().Skip(1).First().SplitBySeparator(",").ToList();
-            var buses = departures.Where(x => x != "x").Select(n => Int32.Parse(n)).ToList();
-            buses.Sort(new DescendingComparer<int>());
 
-            var busesToCheck = new Dictionary<int, int>(); // bus number and offset from highest bus num
-            foreach (var bus in buses) {
-                busesToCheck[bus] = departures.IndexOf(bus.ToString());
+            var buses = new List<int>();
+            var busOffsets = new Dictionary<int, int>();
+
+            // Get rid of the x's, store the offsets
+            for (var offset = 0; offset < departures.Count; offset++) {
+                if (departures[offset] == "x")
+                    continue;
+                var bus = Int32.Parse(departures[offset]);
+                buses.Add(bus);
+                busOffsets[bus] = offset;
             }
 
-            int highestBus = buses[0];
-            int highestBusIndex = busesToCheck[highestBus];
+            var currentBus = buses[0];
+            var nextBusIndex = 1;
+            var nextBus = buses[nextBusIndex];
+            var nextOffset = busOffsets[nextBus];
 
-            // now loop through multiples of highestBus until we find one that satisfies the criteria
+            long timestamp = 0;
+            long stepSize = currentBus;
 
-            return "";
-        }
-    }
+            var lastBus = false;
+            var found = false;
 
-    public class DescendingComparer<T> : IComparer<T> where T : IComparable<T> {
-        public int Compare(T x, T y) {
-            return y.CompareTo(x);
+            while (!found) {
+                timestamp += stepSize;
+
+                Out.Print($"Trying {timestamp} with bus {currentBus}");
+                if ((timestamp + nextOffset) % nextBus != 0) {
+                    continue;
+                }
+
+                if (!lastBus) {
+                    stepSize *= nextBus;
+                    Out.Print("Changing step size to {stepSize}");
+
+                    currentBus = nextBus;
+                    nextBusIndex += 1;
+                    nextBus = buses[nextBusIndex];
+                    nextOffset = busOffsets[nextBus];
+
+                    lastBus = (nextBusIndex == buses.Count - 1);
+                    if (lastBus)
+                        Out.Print("Last bus!!");
+                } else {
+                    found = true;
+                }
+            }
+
+            return timestamp.ToString();
         }
     }
 }
