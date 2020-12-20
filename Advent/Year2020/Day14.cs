@@ -76,7 +76,7 @@ namespace Advent.Year2020 {
                     // convert the original address into a binary string and do the transformation
                     // in the string domain (slower but easier to debug)
 
-                    var source = GetBinaryString(originalAddress);
+                    var source = originalAddress.ToBinaryString();
                     //Out.Print($"Original address {source}");
 
                     // apply the mask to the address 
@@ -130,24 +130,6 @@ namespace Advent.Year2020 {
 
             for (var c = 0; c < source.Length; c++) {
                 result.Append((mask[c] == '0') ? source[c] : mask[c]);
-            }
-
-            return result.ToString();
-        }
-
-        string GetBinaryString(long num, int length = 36) {
-            var position = length - 1;
-            var result = new StringBuilder(length);
-
-            while (position >= 0) {
-                var bit = Convert.ToInt64(Math.Pow(2, position));
-                if (num / bit == 0) {
-                    result.Append('0');
-                } else {
-                    result.Append('1');
-                    num -= bit;
-                }
-                position--;
             }
 
             return result.ToString();
