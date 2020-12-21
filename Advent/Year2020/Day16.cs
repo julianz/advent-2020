@@ -19,7 +19,7 @@ namespace Advent.Year2020 {
             
             foreach (var line in nearbyData) {
                 foreach (var number in line.Split(",").Select(Int32.Parse)) {
-                    if (!IsValidNumber(number, rules)) {
+                    if (!NumberIsValid(number, rules)) {
                         Out.Print($"{number} is not valid for any rule");
                         invalidTotal += number;
                     }
@@ -30,10 +30,52 @@ namespace Advent.Year2020 {
         }
 
         public override string PartTwo(string input) {
-            throw new PuzzleNotSolvedException();
+            input = @"class: 0-1 or 4-19
+                    row: 0-5 or 8-19
+                    seat: 0-13 or 16-19
+
+                    your ticket:
+                    11,12,13
+
+                    nearby tickets:
+                    3,9,18
+                    15,1,5
+                    5,14,9";
+
+            var sections = input.SplitOnBlankLines().ToList();
+            var rulesData = sections[0].AsLines().ToList();
+            var ticketData = sections[1].AsLines().ToList()[1];
+            var nearbyData = sections[2].AsLines().Skip(1).ToList();
+
+            var rules = ParseRules(rulesData);
+            var nearbyTickets = nearbyData.Select(line => line.SplitBySeparator(",").Select(Int32.Parse)).ToList();
+            var validTickets = nearbyTickets.Where(t => TicketIsValid(t, rules)).ToList();
+
+            var fields = new Dictionary<int, string>();
+            var fieldCount = rules.Keys.Count;
+            var fieldsFound = 0;
+
+            foreach (var t in validTickets) {
+                var ticket = t.ToList();
+                for (var v = 0; v < ticket.Count; v++) {
+                    var validFields = GetValidFieldnames(ticket[v], rules);
+                    if (validFields.Count == 1) {
+                        // this is the only possible field that fits this value
+                        Out.Print($"Field {v} must be {validFields[0]}");
+                        fields[v] = validFields[0];
+                    }
+                    Out.Print($"Field {v} could be {String.Join(",", validFields)}");
+                }
+            }
+
+            foreach (var field in fields) {
+                Out.Print($"{field.Key} => {field.Value}");
+            }
+
+            return "nope";
         }
 
-		Dictionary<string, List<int>> ParseRules(List<string> lines) {
+        Dictionary<string, List<int>> ParseRules(List<string> lines) {
             var rules = new Dictionary<string, List<int>>(lines.Count);
             foreach (var line in lines) {
                 var bits = line.Split(":", StringSplitOptions.TrimEntries);
@@ -48,16 +90,37 @@ namespace Advent.Year2020 {
             return rules;
         }
 
-        bool IsValidNumber(int number, Dictionary<string, List<int>> rules) {
-            var valid = false;
+        bool NumberIsValid(int value, Dictionary<string, List<int>> rules) {
             foreach (var rule in rules.Values) {
-                if ((number >= rule[0] && number <= rule[1]) ||
-                    (number >= rule[2] && number <= rule[3])) {
-                    valid = true;
-                    break;
+                if ((value >= rule[0] && value <= rule[1]) ||
+                    (value >= rule[2] && value <= rule[3])) {
+
+                    return true;
                 }
             }
-            return valid;
+            return false;
         }
-	}
+
+        bool TicketIsValid(IEnumerable<int> ticket, Dictionary<string, List<int>> rules) {
+            foreach (var value in ticket) {
+                if (!NumberIsValid(value, rules)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private IList<string> GetValidFieldnames(int value, Dictionary<string, List<int>> rules) {
+            var fieldnames = new List<string>();
+            foreach (var kv in rules) {
+                var rule = kv.Value;
+                if ((value >= rule[0] && value <= rule[1]) ||
+                    (value >= rule[2] && value <= rule[3])) {
+
+                    fieldnames.Add(kv.Key);
+                }
+            }
+            return fieldnames;
+        }
+    }
 }
