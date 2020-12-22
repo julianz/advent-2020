@@ -46,28 +46,24 @@ namespace Advent.Year2020 {
             var rulesData = sections[0].AsLines().ToList();
             var ticketData = sections[1].AsLines().ToList()[1];
             var nearbyData = sections[2].AsLines().Skip(1).ToList();
+            nearbyData.Add(ticketData); // add our ticket to the rest of the data.
 
             var rules = ParseRules(rulesData);
-            var nearbyTickets = nearbyData.Select(line => line.SplitBySeparator(",").Select(Int32.Parse)).ToList();
+            var nearbyTickets = nearbyData.Select(line => line.SplitBySeparator(",").Select(Int32.Parse).ToList()).ToList();
             var validTickets = nearbyTickets.Where(t => TicketIsValid(t, rules)).ToList();
 
             var fields = new Dictionary<int, string>();
-            var fieldCount = rules.Keys.Count;
-            var fieldsFound = 0;
 
-            foreach (var t in validTickets) {
-                var ticket = t.ToList();
-                for (var v = 0; v < ticket.Count; v++) {
-                    var validFields = GetValidFieldnames(ticket[v], rules);
-                    if (validFields.Count == 1) {
-                        // this is the only possible field that fits this value
-                        Out.Print($"Field {v} must be {validFields[0]}");
-                        fields[v] = validFields[0];
-                    }
-                    Out.Print($"Field {v} could be {String.Join(",", validFields)}");
+            for (var field = 0; field < validTickets[0].Count(); field++) {
+                Out.Print($"Field {field}");
+                for (var line = 0; line < validTickets.Count; line++) {
+                    var value = validTickets[line][field];
+                    var validFields = GetValidFieldnames(value, rules);
+                    Out.Print($"{value} is valid for {String.Join(",", validFields)}");
                 }
             }
-
+            
+            
             foreach (var field in fields) {
                 Out.Print($"{field.Key} => {field.Value}");
             }
