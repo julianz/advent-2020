@@ -30,17 +30,17 @@ namespace Advent.Year2020 {
         }
 
         public override string PartTwo(string input) {
-            input = @"class: 0-1 or 4-19
-                    row: 0-5 or 8-19
-                    seat: 0-13 or 16-19
+            //input = @"class: 0-1 or 4-19
+            //        row: 0-5 or 8-19
+            //        seat: 0-13 or 16-19
 
-                    your ticket:
-                    11,12,13
+            //        your ticket:
+            //        11,12,13
 
-                    nearby tickets:
-                    3,9,18
-                    15,1,5
-                    5,14,9";
+            //        nearby tickets:
+            //        3,9,18
+            //        15,1,5
+            //        5,14,9";
 
             var sections = input.SplitOnBlankLines().ToList();
             var rulesData = sections[0].AsLines().ToList();
@@ -52,23 +52,50 @@ namespace Advent.Year2020 {
             var nearbyTickets = nearbyData.Select(line => line.SplitBySeparator(",").Select(Int32.Parse).ToList()).ToList();
             var validTickets = nearbyTickets.Where(t => TicketIsValid(t, rules)).ToList();
 
-            var fields = new Dictionary<int, string>();
+            // Now find all the possible field names for each field.
+
+            var fields = new Dictionary<int, List<string>>();
 
             for (var field = 0; field < validTickets[0].Count(); field++) {
-                Out.Print($"Field {field}");
+                var possibleFields = rules.Keys.ToList();
+
                 for (var line = 0; line < validTickets.Count; line++) {
                     var value = validTickets[line][field];
                     var validFields = GetValidFieldnames(value, rules);
-                    Out.Print($"{value} is valid for {String.Join(",", validFields)}");
+
+                    // Filter out candidates from possible that aren't in validFields
+                    possibleFields = possibleFields.Where(name => validFields.Contains(name)).ToList();
                 }
-            }
-            
-            
-            foreach (var field in fields) {
-                Out.Print($"{field.Key} => {field.Value}");
+
+                fields[field] = possibleFields;
             }
 
-            return "nope";
+            // Now repeatedly filter the list by assigning fields that have only one possible candidate.
+
+            var fieldnames = new Dictionary<int, string>();
+
+            while (fieldnames.Count < rules.Count) {
+                var field = fields.First(f => f.Value.Count == 1).Key;
+                var fieldname = fields[field][0];
+                fieldnames[field] = fieldname;
+
+                // Remove that field from consideration
+                foreach (var item in fields) {
+                    item.Value.Remove(fieldname);
+                }
+            }
+
+            // Now we just need the "departure" fields from our ticket
+
+            long total = 1;
+            var ourTicket = validTickets.Last();
+
+            foreach (var field in fieldnames.Where(k => k.Value.StartsWith("departure"))) {
+                Out.Print($"{field.Value} is field {field.Key} which is {ourTicket[field.Key]}");
+                total *= ourTicket[field.Key];
+            }
+
+            return total.ToString();
         }
 
         Dictionary<string, List<int>> ParseRules(List<string> lines) {
