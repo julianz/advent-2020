@@ -114,7 +114,6 @@ namespace Advent.Year2020 {
         public bool Run() {
             Reset();
             var hitTargetLocation = false;
-            var illegalMemoryLocation = false;
 
             while (true) {
                 _visited.Add(_iptr);
