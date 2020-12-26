@@ -108,11 +108,20 @@ namespace Advent {
         }
 
         static string GetInputForDay(DaySpec day) {
-            // Create the input directory if required
-            var inputDir = Path.Combine(Config.ApplicationDirectory, Config.InputDirectory, day.Year.ToString());
+            // Find out where the input dir is.
+            string inputDir;
+
+            if (Config.InputDirectory == Path.GetFullPath(Config.InputDirectory)) {
+                // The input directory was overridden so just use the overridden value.
+                inputDir = Path.Combine(Config.InputDirectory, day.Year.ToString());
+            } else {
+                // Use the application directory.
+                inputDir = Path.Combine(Config.ApplicationDirectory, Config.InputDirectory, day.Year.ToString());
+            }
+
+            // Complain if the directory doesn't exist.
             if (!Directory.Exists(inputDir)) {
-                Out.Print($"Creating directory {inputDir}");
-                Directory.CreateDirectory(inputDir);
+                throw new DirectoryNotFoundException($"Input directory not found: '{inputDir}'");
             }
             
             var inputPath = Path.Combine(inputDir, $"day{day.Day:D2}.txt");
