@@ -6,16 +6,19 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Advent.Util;
 
 namespace Advent {
     class Program {
+        const string NewDayVerb = "newday";
+
         static readonly Regex DayPattern = new Regex(@"^(?<daynum>\d+)(?<daypart>[ab])$", RegexOptions.IgnoreCase);
         static readonly Regex YearPattern = new Regex(@"^20[12]\d$");
         static Config Config;
 
-        static void Main(string[] args) {
+        static async Task Main(string[] args) {
             if (args.Length == 0) {
                 UsageAndExit();
             }
@@ -33,17 +36,21 @@ namespace Advent {
             //  - year is optional, otherwise we use the default from config
             //  - day must be expressed in the form 1a or 12b
 
+            var command = Commands.RunDay;
             var day = new DaySpec { Year = Config.DefaultYear };
 
             foreach (var arg in args) {
-                if (YearPattern.IsMatch(arg)) {
+                if (arg.Equals(NewDayVerb, StringComparison.InvariantCultureIgnoreCase)) {
+                    command = Commands.NewDay;
+                } else if (YearPattern.IsMatch(arg)) {
                     day.Year = Int32.Parse(YearPattern.Match(arg).Value);
-                } else {
+                } else if (DayPattern.IsMatch(arg)) {
                     var match = DayPattern.Match(arg);
-
-                    if (match.Success) {
-                        day.Day = Int32.Parse(match.Groups["daynum"].Value);
-                        day.Part = match.Groups["daypart"].Value.ToDayPart();
+                    day.Day = Int32.Parse(match.Groups["daynum"].Value);
+                    day.Part = match.Groups["daypart"].Value.ToDayPart();
+                } else if (Int32.TryParse(arg, out var daynum)) {
+                    if (daynum > 0 && daynum <= 25) {
+                        day.Day = daynum;
                     }
                 }
             }
@@ -52,27 +59,11 @@ namespace Advent {
                 UsageAndExit("Day was not specified on the command line");
             }
 
-            // Create our day object
-            var dayInstance = GetDayInstance(day);
-
-            if (dayInstance == null) {
-                UsageAndExit($"Code for {day.Year} day {day.Day} could not be found");
+            if (command == Commands.RunDay) {
+                RunDay(day);
+            } else if (command == Commands.NewDay) {
+                await NewDay.Create(day);
             }
-
-            // If we need input, get it
-            var input = "";
-
-            if (dayInstance.NeedsInput) {
-                input = GetInputForDay(day);
-            }
-
-            // Run the right day part
-            (var result, var elapsed) = RunDay(day, dayInstance, input);
-
-            // Output the results
-            Out.NewLine();
-            Out.Print($"ELAPSED: {elapsed.Ticks / 10000.0}ms");
-            Out.Print($"RESULT : {result}");
         }
 
         static void UsageAndExit(string message = null) {
@@ -149,7 +140,32 @@ namespace Advent {
             return true;
         }
 
-        static (string result, TimeSpan elapsed) RunDay(DaySpec day, DayBase instance, string input) {
+        private static void RunDay(DaySpec day) {
+            // Create the day object
+            var dayInstance = GetDayInstance(day);
+
+            if (dayInstance == null) {
+                UsageAndExit($"Code for {day.Year} day {day.Day} could not be found");
+            }
+
+            // If we need input for this puzzle, get it
+            var input = "";
+
+            if (dayInstance.NeedsInput) {
+                input = GetInputForDay(day);
+            }
+
+            // Run the right day part
+            (var result, var elapsed) = RunDayPart(day, dayInstance, input);
+
+            // Output the results
+            Out.NewLine();
+            Out.Print($"ELAPSED: {elapsed.Ticks / 10000.0}ms");
+            Out.Print($"RESULT : {result}");
+        }
+
+
+        static (string result, TimeSpan elapsed) RunDayPart(DaySpec day, DayBase instance, string input) {
             Out.Print($"Running {day}" + Environment.NewLine);
 
             string result;
@@ -164,5 +180,10 @@ namespace Advent {
             sw.Stop();
             return (result, sw.Elapsed);
         }
+    }
+
+    public enum Commands {
+        RunDay, // run a puzzle for a day/part
+        NewDay  // create a new day solution from a template
     }
 }

@@ -5,6 +5,7 @@ namespace Advent {
     /// Enum for the parts of each day's puzzle
     /// </summary>
     public enum DayPart {
+        None,
         PartOne,
         PartTwo
     }
@@ -17,7 +18,8 @@ namespace Advent {
         public bool IsSet => (Day >= 1 && Day <= 25);
 
         public override string ToString() =>
-            $"{Year} day {Day} part {Part.ToPartNumber()}";
+            $"{Year} day {Day}" + 
+            ((Part != DayPart.None) ? " part {Part.ToPartNumber()}" : String.Empty);
     }
 
     public static class DayPartExtensions {
@@ -31,7 +33,12 @@ namespace Advent {
         }
 
         public static int ToPartNumber(this DayPart part) =>
-            (part == DayPart.PartOne) ? 1 : 2;
+            part switch
+            {
+                DayPart.PartOne => 1,
+                DayPart.PartTwo => 2,
+                _ => 0
+            };
     }
 }
 
