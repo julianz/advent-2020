@@ -19,7 +19,7 @@ namespace Advent {
 
         public override string ToString() =>
             $"{Year} day {Day}" + 
-            ((Part != DayPart.None) ? " part {Part.ToPartNumber()}" : String.Empty);
+            ((Part != DayPart.None) ? $" part {Part.ToPartNumber()}" : String.Empty);
     }
 
     public static class DayPartExtensions {
