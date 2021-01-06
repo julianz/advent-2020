@@ -60,7 +60,7 @@ namespace Advent {
             }
 
             if (command == Commands.RunDay) {
-                RunDay(day);
+                await RunDay(day);
             } else if (command == Commands.NewDay) {
                 await NewDay.Create(day);
             }
@@ -98,7 +98,7 @@ namespace Advent {
             }
         }
 
-        static string GetInputForDay(DaySpec day) {
+        static async Task<string> GetInputForDay(DaySpec day) {
             // Find out where the input dir is.
             string inputDir;
 
@@ -119,13 +119,15 @@ namespace Advent {
             Out.Print("Loading input from " + inputPath);
 
             if (!File.Exists(inputPath)) {
-                DownloadInputForDay(day, inputPath);
+                if (!await DownloadInputForDay(day, inputPath)) {
+                    Environment.Exit(1);
+                }
             }
 
-            return File.ReadAllText(inputPath);
+            return await File.ReadAllTextAsync(inputPath);
         }
 
-        private static bool DownloadInputForDay(DaySpec day, string downloadPath) {
+        private static async Task<bool> DownloadInputForDay(DaySpec day, string downloadPath) {
             var url = $"https://adventofcode.com/{day.Year}/day/{day.Day}/input";
 
             if (Config.SessionCookie == "") {
@@ -135,12 +137,29 @@ namespace Advent {
             using var client = new WebClient();
             client.Headers.Add(HttpRequestHeader.Cookie, Config.SessionCookie);
             Out.Print("Downloading input file from " + url);
-            client.DownloadFile(url, downloadPath);
+
+            try {
+                await client.DownloadFileTaskAsync(url, downloadPath);
+            }
+            catch (WebException ex) {
+                Out.Print(ex.Message);
+                Out.Print(await GetResponseText(ex.Response));
+
+                // Delete the empty file left by DownloadFileTaskAsync.
+                File.Delete(downloadPath);
+                
+                return false;
+            }
 
             return true;
         }
 
-        private static void RunDay(DaySpec day) {
+        private static async Task<string> GetResponseText(WebResponse response) {
+            using var reader = new StreamReader(response?.GetResponseStream() ?? Stream.Null);
+            return await reader.ReadToEndAsync();
+        }
+
+        private static async Task RunDay(DaySpec day) {
             // Create the day object
             var dayInstance = GetDayInstance(day);
 
@@ -152,7 +171,7 @@ namespace Advent {
             var input = "";
 
             if (dayInstance.NeedsInput) {
-                input = GetInputForDay(day);
+                input = await GetInputForDay(day);
             }
 
             // Run the right day part
