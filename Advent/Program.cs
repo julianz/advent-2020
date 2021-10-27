@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -128,35 +129,40 @@ namespace Advent {
         }
 
         private static async Task<bool> DownloadInputForDay(DaySpec day, string downloadPath) {
-            var url = $"https://adventofcode.com/{day.Year}/day/{day.Day}/input";
 
-            if (Config.SessionCookie == "") {
-                throw new InvalidDataException("You need to put the session cookie in the settings.json file");
+            if (String.IsNullOrWhiteSpace(Config.SessionCookie)) {
+                throw new InvalidDataException("You need to put a valid session cookie in the settings.json file");
             }
 
-            using var client = new WebClient();
-            client.Headers.Add(HttpRequestHeader.Cookie, Config.SessionCookie);
+            var crumbs = Config.SessionCookie.Split("=");
+            if (crumbs.Length != 2) {
+                throw new InvalidDataException("A valid session cookie is in the form \"session=53616c7465...\"");
+            }
+
+            var baseAddress = "https://adventofcode.com";
+            var url = $"{baseAddress}/{day.Year}/day/{day.Day}/input";
+
+            // Add the session cookie from config
+            var cookies = new CookieContainer();
+            cookies.Add(new Uri(baseAddress), new Cookie(crumbs[0], crumbs[1]));
+            var handler = new HttpClientHandler { CookieContainer = cookies };
+
             Out.Print("Downloading input file from " + url);
 
             try {
-                await client.DownloadFileTaskAsync(url, downloadPath);
-            }
-            catch (WebException ex) {
-                Out.Print(ex.Message);
-                Out.Print(await GetResponseText(ex.Response));
+                using var client = new HttpClient(handler);
+                using var rs = await client.GetStreamAsync(url);
+                using var fs = new FileStream(downloadPath, FileMode.Create);
 
-                // Delete the empty file left by DownloadFileTaskAsync.
-                File.Delete(downloadPath);
-                
+                await rs.CopyToAsync(fs);
+
+            } catch (Exception ex) {
+                Out.Print(ex.Message);
+
                 return false;
             }
 
             return true;
-        }
-
-        private static async Task<string> GetResponseText(WebResponse response) {
-            using var reader = new StreamReader(response?.GetResponseStream() ?? Stream.Null);
-            return await reader.ReadToEndAsync();
         }
 
         private static async Task RunDay(DaySpec day) {
