@@ -72,7 +72,16 @@ namespace Advent {
                 Out.Print(message);
             }
 
-            Out.Print("ERROR: You must specify a day between 1 and 25 and a part e.g. 3a, 12b");
+            Out.Print(@"
+Advent.exe - Advent of Code puzzle runner
+
+USAGE:
+Advent.exe [yyyy] [dd] (a|b)
+    - run the puzzle for that year, day and part (A or B)
+    - download the puzzle input if it's not there already
+Advent.exe newday[yyyy] [dd]
+    - set up the puzzle class for a new day
+");
             Environment.Exit(1);
         }
 
