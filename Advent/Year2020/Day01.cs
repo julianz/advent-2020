@@ -7,10 +7,6 @@ namespace Advent.Year2020 {
     [Day(2020, 1)]
     public class Day01 : DayBase {
 
-        public Day01() {
-            NeedsInput = true;
-        }
-
         public override string PartOne(string input) {
             var nums = input.AsInts().ToList();
             nums.Sort();
