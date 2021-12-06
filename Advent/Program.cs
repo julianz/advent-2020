@@ -189,13 +189,18 @@ Advent.exe newday[yyyy] [dd]
                 input = await GetInputForDay(day);
             }
 
-            // Run the right day part
-            (var result, var elapsed) = RunDayPart(day, dayInstance, input);
+            try {
+                // Run the right day part
+                (var result, var elapsed) = RunDayPart(day, dayInstance, input);
 
-            // Output the results
-            Out.NewLine();
-            Out.Print($"ELAPSED: {elapsed.Ticks / 10000.0}ms");
-            Out.Print($"RESULT : {result}");
+                // Output the results
+                Out.NewLine();
+                Out.Print($"ELAPSED: {elapsed.Ticks / 10000.0}ms");
+                Out.Print($"RESULT : {result}");
+            }
+            catch (PuzzleNotSolvedException) {
+                Out.Print("PUZZLE NOT SOLVED");
+            }
         }
 
 
