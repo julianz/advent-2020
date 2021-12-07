@@ -18,8 +18,19 @@ namespace Advent.Util {
                 StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
+        /// <summary>
+        /// Split a string by a separator, default is ",".
+        /// </summary>
         public static IEnumerable<string> SplitBySeparator(this string input, string separator = ",") {
             return input.Split(separator,
+                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        }
+
+        /// <summary>
+        /// Split a string at any whitespace character, including line breaks.
+        /// </summary>
+        public static IEnumerable<string> SplitOnWhitespace(this string input) {
+            return input.Split(new char[] { ' ', '\t', '\r', '\n'},
                 StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
