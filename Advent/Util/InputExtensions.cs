@@ -21,7 +21,7 @@ namespace Advent.Util {
         /// <summary>
         /// Split a string by a separator, default is ",".
         /// </summary>
-        public static IEnumerable<string> SplitBySeparator(this string input, string separator = ",") {
+        public static string[] SplitBySeparator(this string input, string separator = ",") {
             return input.Split(separator,
                 StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
@@ -40,6 +40,18 @@ namespace Advent.Util {
 
         public static IEnumerable<long> AsLongs(this string input) {
             return input.AsLines().Select(Int64.Parse);
+        }
+
+        private static char[] Brackets = new char[] { '(', ')', '[', ']' };
+
+        /// <summary>
+        /// Convert a string in the form "3,4" or "(3,4)" into a coordinate tuple
+        /// with integer values named X and Y.
+        /// </summary>
+        public static Coords AsCoords(this string input) {
+            input = input.Trim(Brackets);
+            var values = input.Split(",", count: 2);
+            return new Coords { X = Convert.ToInt32(values[0]), Y = Convert.ToInt32(values[1]) };
         }
     }
 }
