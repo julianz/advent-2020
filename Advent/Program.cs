@@ -29,10 +29,23 @@ namespace Advent {
             // Load configuration and sort out current working directory
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("settings.json");
-            Config = builder.Build().Get<Config>();
+            try {
+                Config = builder.Build().Get<Config>();
+                Config.SanityCheck();
+            }
+            catch (NullReferenceException ex) {
+                WriteLine("Settings file was not found or is empty");
+
+                return;
+            }
+            catch (Exception ex) {
+                WriteLine($"{ex.GetType()}: {ex.Message}");
+
+                return;
+            }
 
             if (Config.ApplicationDirectory == "") {
-                Config.ApplicationDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                Config.ApplicationDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
             }
 
             // Read the command line params
