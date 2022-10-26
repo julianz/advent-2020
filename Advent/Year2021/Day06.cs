@@ -18,7 +18,7 @@ namespace Advent.Year2021 {
             var newFish = 9;
             var freshFish = new List<int>();
 
-            //Out.Print($"Initial state: {String.Join(",", school)}");
+            //WriteLine($"Initial state: {String.Join(",", school)}");
 
             for (var day = 1; day <= 256; day++) {
                 school.AddRange(freshFish);
@@ -34,7 +34,7 @@ namespace Advent.Year2021 {
                     }
                 }
 
-                //Out.Print($"After {day,2} day{(day > 1 ? 's' : ' ')}: {String.Join(",", school)}");
+                //WriteLine($"After {day,2} day{(day > 1 ? 's' : ' ')}: {String.Join(",", school)}");
             }
 
             return school.Count.ToString();

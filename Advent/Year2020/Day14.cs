@@ -37,7 +37,7 @@ namespace Advent.Year2020 {
                     value |= onesMask;
                     value &= zeroesMask;
 
-                    //Out.Print($"{addr} - {value}");
+                    //WriteLine($"{addr} - {value}");
                     memory[addr] = value;
                 }
             }
@@ -60,7 +60,7 @@ namespace Advent.Year2020 {
                 if (pieces[0] == "mask") {
                     // reset mask, split it into ones and zeroes masks
                     mask = pieces[1];
-                    //Out.Print($"Setting mask to  {mask}");
+                    //WriteLine($"Setting mask to  {mask}");
                 } else {
                     // set memory
                     var originalAddress = Int64.Parse(pieces[0].Substring(4, pieces[0].Length - 5));
@@ -77,18 +77,18 @@ namespace Advent.Year2020 {
                     // in the string domain (slower but easier to debug)
 
                     var source = originalAddress.ToBinaryString();
-                    //Out.Print($"Original address {source}");
+                    //WriteLine($"Original address {source}");
 
                     // apply the mask to the address 
                     var masked = ApplyMaskToAddress(source, mask);
-                    //Out.Print($"Masked           {masked}");
+                    //WriteLine($"Masked           {masked}");
 
                     // produce the list of actual addresses that will have the value written to them.
                     var addresses = GetAddressesFromMasked(masked);
 
                     foreach (var addrString in addresses) {
                         var address = Convert.ToInt64(addrString, 2);
-                        //Out.Print($"Setting {address} to {value}");
+                        //WriteLine($"Setting {address} to {value}");
                         memory[address] = value;
                     }
                 }

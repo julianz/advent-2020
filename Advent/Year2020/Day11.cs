@@ -71,12 +71,11 @@ namespace Advent.Year2020 {
         }
 
         public void Print(bool summary = false) {
-            Out.Print($"Generation: { Generation }\nChanged: { ((Generation > 0) ? ChangedCells : 0) }\nOccupied: { OccupiedSeats }");
-            Out.NewLine();
+            WriteLine($"Generation: { Generation }\nChanged: { ((Generation > 0) ? ChangedCells : 0) }\nOccupied: { OccupiedSeats }\n");
 
             if (!summary) {
-                _grid.ForEach(Out.Print);
-                Out.NewLine();
+                _grid.ForEach(WriteLine);
+                WriteLine();
             }
         }
 

@@ -43,7 +43,7 @@ namespace Advent.Year2020 {
                 }
 
                 turn++;
-                //Out.Print($"Turn {turn} spoke {lastSpoken}");
+                //WriteLine($"Turn {turn} spoke {lastSpoken}");
             }
 
             return lastSpoken;

@@ -25,7 +25,7 @@ namespace Advent.Year2020 {
 
             // Convert the input into a regex
             var expr = Expand(rules["0"], rules);
-            //Out.Print(expr);
+            //WriteLine(expr);
             var re = new Regex(@$"^{expr}$", RegexOptions.IgnorePatternWhitespace);
 
             return messages.Count(m => re.IsMatch(m)).ToString();

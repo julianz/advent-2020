@@ -29,11 +29,11 @@ namespace Advent {
             var outputPath = Path.Combine(sourceLocation, yearPart, $"{className}.cs");
 
             if (File.Exists(outputPath)) {
-                Out.Print($"ERROR: Code for {day} already exists");
+                WriteLine($"ERROR: Code for {day} already exists");
                 return false;
             }
 
-            Out.Print($"Creating solution file for {day} at '{outputPath}'");
+            WriteLine($"Creating solution file for {day} at '{outputPath}'");
 
             var text = await File.ReadAllTextAsync(templatePath);
             text = text.Replace("namespace Advent", $"namespace {nameSpace}")

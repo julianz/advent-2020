@@ -61,7 +61,7 @@ namespace Advent.Year2020 {
                     if (ValidKeys.Contains(bits[0])) {
                         fields[bits[0]] = bits[1];
                     } else {
-                        Out.Print($"Discarding invalid field {f}");
+                        WriteLine($"Discarding invalid field {f}");
                     }
                 }
             }

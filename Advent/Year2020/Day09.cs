@@ -22,7 +22,7 @@ namespace Advent.Year2020 {
                     for (var n = 1; n <= distance; n++) {
                         if (m == n) continue;
                         if (nums[i - m] + nums[i - n] == target) {
-                            //Out.Print($"{nums[i - m]} + {nums[i - n]} = {target}");
+                            //WriteLine($"{nums[i - m]} + {nums[i - n]} = {target}");
                             found = true;
                             break;
                         }
@@ -43,7 +43,7 @@ namespace Advent.Year2020 {
 
             for (var end = pos - 1; end > 0; end--) {
                 for (var start = end - 1; start >= 0; start--) {
-                    //Out.Print($"{start} - {end}");
+                    //WriteLine($"{start} - {end}");
                     long sum = 0;
                     for (var i = start; i <= end; i++) {
                         sum += nums[i];
@@ -53,7 +53,7 @@ namespace Advent.Year2020 {
                         var high = nums.GetRange(start, (end - start)).Max();
                         var low = nums.GetRange(start, (end - start)).Min();
                         result = high + low;
-                        Out.Print($"Found: start: {start} end: {end} low: {low} high: {high} result: {result}");
+                        WriteLine($"Found: start: {start} end: {end} low: {low} high: {high} result: {result}");
                         break;
                     }
                     if (result > 0) break;

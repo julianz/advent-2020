@@ -76,7 +76,7 @@ namespace Advent.Year2021 {
             var result = false;
             foreach (var board in Boards.Where(b => !b.HasWon)) {
                 if (board.CheckWin()) {
-                    Out.Print($"Board {Boards.IndexOf(board)} has won");
+                    WriteLine($"Board {Boards.IndexOf(board)} has won");
                     WinningBoard = board;
                     result = true;
                 }

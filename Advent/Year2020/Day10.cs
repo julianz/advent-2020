@@ -63,7 +63,7 @@ namespace Advent.Year2020 {
         long CountPathsInner(int from, List<int> steps) {
             // find all the options for next step from here
             var options = steps.Where(n => n > from && n - from <= 3).ToList();
-            //Out.Print($"{from} : ({String.Join(", ", options)})");
+            //WriteLine($"{from} : ({String.Join(", ", options)})");
 
             if (options.Count == 0) {
                 // only one option here

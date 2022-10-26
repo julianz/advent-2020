@@ -22,7 +22,7 @@ namespace Advent.Year2020 {
             while (true) {
                 foreach (var bus in buses) {
                     if (timestamp % bus == 0) {
-                        Out.Print($"Bus {bus} arrives at timestamp {timestamp}, {timestamp - earliest} min wait");
+                        WriteLine($"Bus {bus} arrives at timestamp {timestamp}, {timestamp - earliest} min wait");
                         return ((timestamp - earliest) * bus).ToString();
                     }
                 }
@@ -68,14 +68,14 @@ namespace Advent.Year2020 {
             while (!found) {
                 timestamp += stepSize;
 
-                Out.Print($"Trying {timestamp} with bus {currentBus}");
+                WriteLine($"Trying {timestamp} with bus {currentBus}");
                 if ((timestamp + nextOffset) % nextBus != 0) {
                     continue;
                 }
 
                 if (!lastBus) {
                     stepSize *= nextBus;
-                    Out.Print("Changing step size to {stepSize}");
+                    WriteLine("Changing step size to {stepSize}");
 
                     currentBus = nextBus;
                     nextBusIndex += 1;
@@ -84,7 +84,7 @@ namespace Advent.Year2020 {
 
                     lastBus = (nextBusIndex == buses.Count - 1);
                     if (lastBus)
-                        Out.Print("Last bus!!");
+                        WriteLine("Last bus!!");
                 } else {
                     found = true;
                 }

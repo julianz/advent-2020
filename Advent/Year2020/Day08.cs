@@ -30,7 +30,7 @@ namespace Advent.Year2020 {
                 visited.Add(iptr);
                 var instr = new Instruction(program[iptr]);
 
-                Out.Print($"iptr: {iptr}  acc: {accumulator}  instr: {instr}");
+                WriteLine($"iptr: {iptr}  acc: {accumulator}  instr: {instr}");
 
                 switch (instr.Operation) {
                     case Opcode.ACC:
@@ -46,7 +46,7 @@ namespace Advent.Year2020 {
                 }
 
                 if (visited.Contains(iptr)) {
-                    Out.Print($"About to repeat instruction {iptr}, acc is {accumulator}");
+                    WriteLine($"About to repeat instruction {iptr}, acc is {accumulator}");
                     break;
                 }
             }
@@ -59,7 +59,7 @@ namespace Advent.Year2020 {
 
             var vm = new VirtualMachine(program);
             var result = vm.Run();
-            Out.Print(result);
+            WriteLine(result);
             
             return  vm.Accumulator.ToString();
         }
@@ -119,7 +119,7 @@ namespace Advent.Year2020 {
                 _visited.Add(_iptr);
                 var instr = new Instruction(_program[_iptr]);
 
-                Out.Print($"iptr: {_iptr}  acc: {_accumulator}  instr: {instr}");
+                WriteLine($"iptr: {_iptr}  acc: {_accumulator}  instr: {instr}");
 
                 switch (instr.Operation) {
                     case Opcode.ACC:
@@ -135,11 +135,11 @@ namespace Advent.Year2020 {
                 }
 
                 if (_iptr == _targetLocation) {
-                    Out.Print($"About to jump past the end of program, acc is {_accumulator}");
+                    WriteLine($"About to jump past the end of program, acc is {_accumulator}");
                     hitTargetLocation = true;
                     break;
                 } else if (_visited.Contains(_iptr)) {
-                    Out.Print($"Loop detected: about to repeat instruction {_iptr}");
+                    WriteLine($"Loop detected: about to repeat instruction {_iptr}");
                     break;
                 }
             }

@@ -39,7 +39,7 @@ namespace Advent.Year2020 {
                 // Reverse the stack so we eval in the right order
                 var reversed = new Stack<String>(expr);
                 var linetotal = Int64.Parse(Simplify(reversed));
-                //Out.Print($"{line} = {linetotal}");
+                //WriteLine($"{line} = {linetotal}");
 
                 total += linetotal;
             }
@@ -79,7 +79,7 @@ namespace Advent.Year2020 {
                 // Reverse the stack so we eval in the right order
                 //var reversed = new Stack<String>(expr);
                 var linetotal = Int64.Parse(SimplifyWithPriority(expr));
-                //Out.Print($"{line} = {linetotal}");
+                //WriteLine($"{line} = {linetotal}");
 
                 total += linetotal;
             }

@@ -43,7 +43,7 @@ namespace Advent.Year2020 {
             }
 
             CountContainers("shiny gold");
-            Out.NewLine();
+            WriteLine();
             Out.PrintList(Containers);
             return Containers.Count.ToString();
         }
@@ -90,7 +90,7 @@ namespace Advent.Year2020 {
         }
 
         void CountContainers(string colour) {
-            Out.Print(colour);
+            WriteLine(colour);
             if (Bags.ContainsKey(colour)) {
                 foreach (var container in Bags[colour]) {
                     Containers.Add(container);

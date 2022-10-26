@@ -20,7 +20,7 @@ namespace Advent.Year2020 {
             foreach (var line in nearbyData) {
                 foreach (var number in line.Split(",").Select(Int32.Parse)) {
                     if (!NumberIsValid(number, rules)) {
-                        Out.Print($"{number} is not valid for any rule");
+                        WriteLine($"{number} is not valid for any rule");
                         invalidTotal += number;
                     }
                 }
@@ -91,7 +91,7 @@ namespace Advent.Year2020 {
             var ourTicket = validTickets.Last();
 
             foreach (var field in fieldnames.Where(k => k.Value.StartsWith("departure"))) {
-                Out.Print($"{field.Value} is field {field.Key} which is {ourTicket[field.Key]}");
+                WriteLine($"{field.Value} is field {field.Key} which is {ourTicket[field.Key]}");
                 total *= ourTicket[field.Key];
             }
 

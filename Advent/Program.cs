@@ -1,4 +1,6 @@
-﻿using System;
+﻿global using static System.Console;
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +11,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Advent.Util;
+
 
 namespace Advent {
     class Program {
@@ -69,10 +71,10 @@ namespace Advent {
 
         static void UsageAndExit(string message = null) {
             if (message != null) {
-                Out.Print(message);
+                WriteLine(message);
             }
 
-            Out.Print(@"
+            WriteLine(@"
 Advent.exe - Advent of Code puzzle runner
 
 USAGE:
@@ -126,7 +128,7 @@ Advent.exe newday[yyyy] [dd]
             }
             
             var inputPath = Path.Combine(inputDir, $"day{day.Day:D2}.txt");
-            Out.Print("Loading input from " + inputPath);
+            WriteLine("Loading input from " + inputPath);
 
             if (!File.Exists(inputPath)) {
                 if (!await DownloadInputForDay(day, inputPath)) {
@@ -156,7 +158,7 @@ Advent.exe newday[yyyy] [dd]
             cookies.Add(new Uri(baseAddress), new Cookie(crumbs[0], crumbs[1]));
             var handler = new HttpClientHandler { CookieContainer = cookies };
 
-            Out.Print("Downloading input file from " + url);
+            WriteLine("Downloading input file from " + url);
 
             try {
                 using var client = new HttpClient(handler);
@@ -166,7 +168,7 @@ Advent.exe newday[yyyy] [dd]
                 await rs.CopyToAsync(fs);
 
             } catch (Exception ex) {
-                Out.Print(ex.Message);
+                WriteLine(ex.Message);
 
                 return false;
             }
@@ -194,18 +196,18 @@ Advent.exe newday[yyyy] [dd]
                 (var result, var elapsed) = RunDayPart(day, dayInstance, input);
 
                 // Output the results
-                Out.NewLine();
-                Out.Print($"ELAPSED: {elapsed.Ticks / 10000.0}ms");
-                Out.Print($"RESULT : {result}");
+                WriteLine();
+                WriteLine($"ELAPSED: {elapsed.Ticks / 10000.0}ms");
+                WriteLine($"RESULT : {result}");
             }
             catch (PuzzleNotSolvedException) {
-                Out.Print("PUZZLE NOT SOLVED");
+                WriteLine("PUZZLE NOT SOLVED");
             }
         }
 
 
         static (string result, TimeSpan elapsed) RunDayPart(DaySpec day, DayBase instance, string input) {
-            Out.Print($"Running {day}" + Environment.NewLine);
+            WriteLine($"Running {day}" + Environment.NewLine);
 
             string result;
             var sw = Stopwatch.StartNew();
