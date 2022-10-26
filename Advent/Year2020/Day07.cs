@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using MoreLinq.Extensions;
 using Advent.Util;
 
 namespace Advent.Year2020 {
     [Day(2020, 7)]
     public class Day07 : DayBase {
-        Dictionary<string, HashSet<string>> Bags = new Dictionary<string, HashSet<string>>();
-        HashSet<string> Containers = new HashSet<string>();
+        Dictionary<string, HashSet<string>> Bags = new();
+        readonly HashSet<string> Containers = new();
 
         public override string PartOne(string input) {
             //input = @"light red bags contain 1 bright white bag, 2 muted yellow bags.
@@ -44,7 +45,7 @@ namespace Advent.Year2020 {
 
             CountContainers("shiny gold");
             WriteLine();
-            Out.PrintList(Containers);
+            Containers.ForEach(c => WriteLine(c));
             return Containers.Count.ToString();
         }
 
