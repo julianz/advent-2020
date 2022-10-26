@@ -1,0 +1,7 @@
+﻿{
+  "_comment": "This is the pattern for the settings.json file. Only define settings you actually want to override",
+  "DefaultYear": 2022,
+  "SessionCookie": "",
+  "ApplicationDirectory": "",
+  "InputDirectory": ""
+}
