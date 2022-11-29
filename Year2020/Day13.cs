@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Advent.Util;
-
-namespace Advent.Year2020 {
+﻿namespace Advent.Year2020 {
     [Day(2020, 13)]
     public class Day13 : DayBase {
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var bits = input.AsLines().ToList();
 
             var earliest = Int32.Parse(bits[0]);
@@ -31,7 +23,7 @@ namespace Advent.Year2020 {
             }
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             /*
              * The earliest timestamp that matches the list 17,x,13,19 is 3417.
              * 67,7,59,61 first occurs at timestamp 754018.

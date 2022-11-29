@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using Advent.Util;
-
-namespace Advent.Year2015 {
+﻿namespace Advent.Year2015 {
     [Day(2015, 2)]
     public class Day02 : DayBase {
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var total = 0;
 
             foreach (var line in input.AsLines()) {
@@ -18,7 +14,7 @@ namespace Advent.Year2015 {
             return total.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var total = 0;
 
             foreach (var line in input.AsLines()) {

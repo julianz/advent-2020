@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace Advent {
+﻿namespace Advent {
     public class Config {
         /// <summary>
         /// The default year to use if one is not provided on the command line.
         /// </summary>
-        public int DefaultYear { get; set; } = 2021;
+        public int DefaultYear { get; set; } = 2022;
 
         /// <summary>
         /// The session cookie from adventofcode.com.

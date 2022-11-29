@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Advent.Util;
-
-namespace Advent.Year2015 {
+﻿namespace Advent.Year2015 {
     [Day(2015, 3)]
     public class Day03 : DayBase {
 
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var locations = new HashSet<Location>();
             var loc = new Location(0, 0);
 
@@ -25,7 +17,7 @@ namespace Advent.Year2015 {
             return locations.Count.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var locations = new HashSet<Location>();
 
             var santaLoc = new Location(0, 0);

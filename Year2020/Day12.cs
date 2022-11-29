@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Advent.Util;
-
-namespace Advent.Year2020 {
+﻿namespace Advent.Year2020 {
     [Day(2020, 12)]
     public class Day12 : DayBase {
         const char North = 'N';
@@ -17,7 +9,7 @@ namespace Advent.Year2020 {
         const char Left = 'L';
         const char Right = 'R';
 
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var instructions = input.AsLines();
 
             var coords = (x: 0, y: 0);
@@ -69,7 +61,7 @@ namespace Advent.Year2020 {
             return manhattan.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var instructions = input.AsLines();
 
             var coords = (x: 0, y: 0);

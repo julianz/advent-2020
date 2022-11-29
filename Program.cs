@@ -204,7 +204,7 @@ Advent.exe newday[yyyy] [dd]
 
             try {
                 // Run the right day part
-                (var result, var elapsed) = RunDayPart(day, dayInstance, input);
+                (var result, var elapsed) = await RunDayPart(day, dayInstance, input);
 
                 // Output the results
                 WriteLine();
@@ -217,16 +217,16 @@ Advent.exe newday[yyyy] [dd]
         }
 
 
-        static (string result, TimeSpan elapsed) RunDayPart(DaySpec day, DayBase instance, string input) {
+        static async Task<(string result, TimeSpan elapsed)> RunDayPart(DaySpec day, DayBase instance, string input) {
             WriteLine($"Running {day}" + Environment.NewLine);
 
             string result;
             var sw = Stopwatch.StartNew();
 
             if (day.Part == DayPart.PartOne) {
-                result = instance.PartOne(input);
+                result = await instance.PartOne(input);
             } else {
-                result = instance.PartTwo(input);
+                result = await instance.PartTwo(input);
             }
 
             sw.Stop();

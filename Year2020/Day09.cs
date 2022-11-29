@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Advent.Util;
-
-namespace Advent.Year2020 {
+﻿namespace Advent.Year2020 {
     [Day(2020, 9)]
     public class Day09 : DayBase {
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var nums = input.AsLongs().ToList();
             var preamble = 25;
             var distance = 25;
@@ -35,7 +27,7 @@ namespace Advent.Year2020 {
             return target.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var nums = input.AsLongs().ToList();
             long target = 50047984;
             var pos = nums.IndexOf(target);

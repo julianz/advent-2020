@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-
-using Advent.Util;
-
 namespace Advent.Year2020 {
     [Day(2020, 18)]
     public class Day18 : DayBase {
         const string Digits = "0123456789";
         const string Operators = "+*";
 
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var lines = input.AsLines();
             long total = 0;
 
@@ -47,7 +42,7 @@ namespace Advent.Year2020 {
             return total.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             //input = "2 * 3 + (4 * 5)";
 
             var lines = input.AsLines();

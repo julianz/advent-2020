@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Advent.Util;
-
-namespace Advent.Year2015 {
+﻿namespace Advent.Year2015 {
     [Day(2015, 5)]
     public class Day05 : DayBase {
         Regex VowelPattern = new Regex(@".*[aeiou].*[aeiou].*[aeiou].*");
@@ -16,7 +8,7 @@ namespace Advent.Year2015 {
         Regex DoubleDoublePattern = new Regex(@"([a-z][a-z]).*\1");
         Regex PiggyPattern = new Regex(@"([a-z])[a-z]\1");
 
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var nice = 0;
 
             foreach (var line in input.AsLines()) {
@@ -31,7 +23,7 @@ namespace Advent.Year2015 {
             return nice.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var nice = 0;
 
             foreach (var line in input.AsLines()) {

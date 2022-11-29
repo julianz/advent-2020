@@ -1,18 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-using MoreLinq;
-
-using Advent.Util;
-
 namespace Advent.Year2020 {
     [Day(2020, 19)]
     public class Day19 : DayBase {
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var sections = input.SplitOnBlankLines().ToList();
             
             Dictionary<string, string> rules = new();
@@ -31,7 +20,7 @@ namespace Advent.Year2020 {
             return messages.Count(m => re.IsMatch(m)).ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             throw new PuzzleNotSolvedException();
         }
 

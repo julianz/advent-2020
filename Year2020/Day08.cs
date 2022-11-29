@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Advent.Util;
-
-namespace Advent.Year2020 {
+﻿namespace Advent.Year2020 {
     [Day(2020, 8)]
     public class Day08 : DayBase {
 
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             //input = @"nop +0
             //        acc +1
             //        jmp +4
@@ -54,7 +46,7 @@ namespace Advent.Year2020 {
             return accumulator.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var program = input.AsLines().ToList();
 
             var vm = new VirtualMachine(program);

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Advent.Util;
-
-namespace Advent.Year2020 {
+﻿namespace Advent.Year2020 {
     [Day(2020, 1)]
     public class Day01 : DayBase {
 
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var nums = input.AsInts().ToList();
             nums.Sort();
 
@@ -23,7 +18,7 @@ namespace Advent.Year2020 {
             return "Not found";
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var product = 0;
             var nums = input.AsInts().ToList();
 

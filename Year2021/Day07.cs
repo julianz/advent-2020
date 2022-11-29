@@ -1,18 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-using MoreLinq;
-
-using Advent.Util;
-
 namespace Advent.Year2021 {
     [Day(2021, 7)]
     public class Day07 : DayBase {
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             //input = "16,1,2,0,4,2,7,1,2,14";
             var crabs = input.SplitBySeparator().Select(Int32.Parse).ToList();
 
@@ -33,7 +22,7 @@ namespace Advent.Year2021 {
             return leastFuel.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             //input = "16,1,2,0,4,2,7,1,2,14";
             var crabs = input.SplitBySeparator().Select(Int32.Parse).ToList();
 

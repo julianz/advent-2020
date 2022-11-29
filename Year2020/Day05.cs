@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Advent.Util;
-
-namespace Advent.Year2020 {
+﻿namespace Advent.Year2020 {
     [Day(2020, 5)]
     public class Day05 : DayBase {
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var passes = input.AsLines();
 
             var highest = GetPassIds(passes).Max();
@@ -17,7 +9,7 @@ namespace Advent.Year2020 {
             return highest.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var passes = input.AsLines();
 
             var passids = GetPassIds(passes).ToList();

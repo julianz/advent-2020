@@ -1,21 +1,17 @@
-﻿using System;
-using System.Linq;
-using Advent.Util;
-
-namespace Advent.Year2015 {
+﻿namespace Advent.Year2015 {
     [Day(2015, 1)]
     public class Day01: DayBase {
         const char Up = '(';
         const char Down = ')';
 
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var ups = input.Count(c => c == Up);
             var downs = input.Count(c => c == Down);
 
             return (ups - downs).ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var floor = 0;
             var step = 0;
 

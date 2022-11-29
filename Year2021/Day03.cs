@@ -1,18 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-using MoreLinq;
-
-using Advent.Util;
-
 namespace Advent.Year2021 {
     [Day(2021, 3)]
     public class Day03 : DayBase {
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var lineLength = 12;
             var values = Enumerable.Repeat(0, lineLength).ToList();
 
@@ -32,7 +21,7 @@ namespace Advent.Year2021 {
             return (gamma * epsilon).ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var lines = input.AsLines().ToList();
             var lineLength = lines[0].Length;
             var colIndex = 0;

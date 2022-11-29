@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using MoreLinq.Extensions;
-using Advent.Util;
-
-namespace Advent.Year2020 {
+﻿namespace Advent.Year2020 {
     [Day(2020, 7)]
     public class Day07 : DayBase {
         Dictionary<string, HashSet<string>> Bags = new();
         readonly HashSet<string> Containers = new();
 
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             //input = @"light red bags contain 1 bright white bag, 2 muted yellow bags.
             //        dark orange bags contain 3 bright white bags, 4 muted yellow bags.
             //        bright white bags contain 1 shiny gold bag.
@@ -51,7 +46,7 @@ namespace Advent.Year2020 {
 
         Dictionary<string, Dictionary<string, int>> Contains = new Dictionary<string, Dictionary<string, int>>();
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             //input = @"light red bags contain 1 bright white bag, 2 muted yellow bags.
             //        dark orange bags contain 3 bright white bags, 4 muted yellow bags.
             //        bright white bags contain 1 shiny gold bag.

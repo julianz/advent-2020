@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Advent.Util;
+﻿using System.Security.Cryptography;
 
 namespace Advent.Year2015 {
     [Day(2015, 4)]
@@ -16,7 +9,7 @@ namespace Advent.Year2015 {
             NeedsInput = false;
         }
 
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var num = 0;
             var found = false;
 
@@ -39,7 +32,7 @@ namespace Advent.Year2015 {
             return num.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var num = 282749; // part 1 answer, it can't be less than that
             var found = false;
 

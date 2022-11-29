@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Advent.Util;
-
-namespace Advent.Year2020 {
+﻿namespace Advent.Year2020 {
     [Day(2020, 14)]
     public class Day14 : DayBase {
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var program = input.AsLines();
             var memory = new Dictionary<long, long>();
             var mask = "";
@@ -45,7 +37,7 @@ namespace Advent.Year2020 {
             return memory.Values.Sum().ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             //input = @"mask = 000000000000000000000000000000X1001X
             //        mem[42] = 100
             //        mask = 00000000000000000000000000000000X0XX

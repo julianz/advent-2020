@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Advent.Util;
-
-namespace Advent.Year2020 {
+﻿namespace Advent.Year2020 {
     [Day(2020, 16)]
     public class Day16 : DayBase {
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
             var sections = input.SplitOnBlankLines().ToList();
             var rulesData = sections[0].AsLines().ToList();
             var nearbyData = sections[2].AsLines().Skip(1).ToList();
@@ -29,7 +21,7 @@ namespace Advent.Year2020 {
             return invalidTotal.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             //input = @"class: 0-1 or 4-19
             //        row: 0-5 or 8-19
             //        seat: 0-13 or 16-19

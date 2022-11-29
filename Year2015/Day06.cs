@@ -1,14 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-using MoreLinq;
-
-using Advent.Util;
-
 namespace Advent.Year2015 {
     [Day(2015, 6)]
     public class Day06 : DayBase {
@@ -18,7 +7,7 @@ namespace Advent.Year2015 {
         private const int GridRows = 1000;
         private const int GridCols = 1000;
 
-        public override string PartOne(string input) {
+        public override async Task<string> PartOne(string input) {
 
             var grid = new HashSet<int>(GridRows * GridCols);
 
@@ -64,7 +53,7 @@ namespace Advent.Year2015 {
             return grid.Count.ToString();
         }
 
-        public override string PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             var grid = new Dictionary<int, int>(GridRows * GridCols);
 
             foreach (var line in input.AsLines()) {
