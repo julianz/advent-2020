@@ -1,6 +1,4 @@
-﻿global using static System.Console;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -33,7 +31,7 @@ namespace Advent {
                 Config = builder.Build().Get<Config>();
                 Config.SanityCheck();
             }
-            catch (NullReferenceException ex) {
+            catch (NullReferenceException) {
                 WriteLine("Settings file was not found or is empty");
 
                 return;
