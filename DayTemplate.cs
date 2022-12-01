@@ -5,7 +5,7 @@
             throw new PuzzleNotSolvedException();
         }
 
-        public override Task<string> PartTwo(string input) {
+        public override async Task<string> PartTwo(string input) {
             throw new PuzzleNotSolvedException();
         }
     }

@@ -26,11 +26,17 @@ namespace Advent {
 
             var sourceLocation = Path.GetDirectoryName(ThisFilePath());
             var templatePath = Path.Combine(sourceLocation, TemplateName);
+            var outputDir = Path.Combine(sourceLocation, yearPart);
             var outputPath = Path.Combine(sourceLocation, yearPart, $"{className}.cs");
 
             if (File.Exists(outputPath)) {
                 WriteLine($"ERROR: Code for {day} already exists");
                 return false;
+            }
+
+            if (!Directory.Exists(outputDir)) { 
+                WriteLine($"Creating a new year's directory at {outputDir}");
+                Directory.CreateDirectory(outputDir);
             }
 
             WriteLine($"Creating solution file for {day} at '{outputPath}'");
