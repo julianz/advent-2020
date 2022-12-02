@@ -23,15 +23,15 @@ namespace Advent.Year2022 {
                 .ToString();
         }
 
-        internal const int Rock = 1;
-        internal const int Paper = 2;
-        internal const int Scissors = 3;
+        const int Rock = 1;
+        const int Paper = 2;
+        const int Scissors = 3;
 
-        internal const int Loss = 0;
-        internal const int Draw = 3;
-        internal const int Win = 6;
+        const int Loss = 0;
+        const int Draw = 3;
+        const int Win = 6;
 
-        internal static int ScorePart1(string play) {
+        static int ScorePart1(string play) {
             // A and X are Rock which scores 1
             // B and Y are Paper which scores 2
             // C and Z are Scissors which scores 3
@@ -55,7 +55,7 @@ namespace Advent.Year2022 {
             };
         }
 
-        internal static int ScorePart2(string play) {
+        static int ScorePart2(string play) {
             // A is Rock, B Paper, C Scissors
             // X means lose, Y means draw, Z means win
             // 0 for a loss, 3 for a draw, 6 for a win
