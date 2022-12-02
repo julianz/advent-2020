@@ -29,11 +29,11 @@
                 throw new ArgumentOutOfRangeException(nameof(SessionCookie), "Config: SessionCookie must be defined");
             }
 
-            if (SessionCookie == null) {
+            if (ApplicationDirectory == null) {
                 throw new ArgumentOutOfRangeException(nameof(ApplicationDirectory), "Config: ApplicationDirectory must be defined");
             }
 
-            if (SessionCookie == null) {
+            if (InputDirectory == null) {
                 throw new ArgumentOutOfRangeException(nameof(InputDirectory), "Config: InputDirectory must be defined");
             }
         }
