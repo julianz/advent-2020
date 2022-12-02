@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
 
@@ -92,8 +87,8 @@ USAGE:
 Advent.exe [yyyy] [dd] (a|b)
     - run the puzzle for that year, day and part (A or B)
     - download the puzzle input if it's not there already
-Advent.exe newday[yyyy] [dd]
-    - set up the puzzle class for a new day
+Advent.exe newday [yyyy] [dd]
+    - create the puzzle class for a new day
 ");
             Environment.Exit(1);
         }
