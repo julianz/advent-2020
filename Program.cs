@@ -15,9 +15,6 @@ namespace Advent {
         static Config Config;
 
         static async Task Main(string[] args) {
-            if (args.Length == 0) {
-                UsageAndExit();
-            }
 
             // Load configuration and sort out current working directory
             var builder = new ConfigurationBuilder()
@@ -25,6 +22,10 @@ namespace Advent {
             try {
                 Config = builder.Build().Get<Config>();
                 Config.SanityCheck();
+
+                if (Config.ApplicationDirectory == "") {
+                    Config.ApplicationDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+                }
             }
             catch (NullReferenceException) {
                 WriteLine("Settings file was not found or is empty");
@@ -35,10 +36,6 @@ namespace Advent {
                 WriteLine($"{ex.GetType()}: {ex.Message}");
 
                 return;
-            }
-
-            if (Config.ApplicationDirectory == "") {
-                Config.ApplicationDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
             }
 
             // Read the command line params
