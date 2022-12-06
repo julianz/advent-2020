@@ -1,4 +1,6 @@
-﻿namespace Advent {
+﻿using System.IO;
+
+namespace Advent {
     public class Config {
         /// <summary>
         /// The default year to use if one is not provided on the command line.
@@ -16,9 +18,9 @@
         public string ApplicationDirectory { get; set; } = "";
 
         /// <summary>
-        /// Where to look for puzzle input, either as an absolute path or relative to ApplicationDirectory.
+        /// Where to look for puzzle input. Defaults to the Input directory in the project dir.
         /// </summary>
-        public string InputDirectory { get; set; } = "Input";
+        public string InputDirectory { get; set; } = Path.Combine(Resources.ProjectDirectory.Trim(), "Input");
 
         public void SanityCheck() {
             if (DefaultYear < 2015) {

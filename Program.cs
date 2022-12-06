@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 
-
 namespace Advent {
     class Program {
         const string NewDayVerb = "newday";
@@ -115,15 +114,7 @@ Advent.exe newday [yyyy] [dd]
 
         static async Task<string> GetInputForDay(DaySpec day) {
             // Find out where the input dir is.
-            string inputDir;
-
-            if (Config.InputDirectory == Path.GetFullPath(Config.InputDirectory)) {
-                // The input directory was overridden so just use the overridden value.
-                inputDir = Path.Combine(Config.InputDirectory, day.Year.ToString());
-            } else {
-                // Use the application directory.
-                inputDir = Path.Combine(Config.ApplicationDirectory, Config.InputDirectory, day.Year.ToString());
-            }
+            string inputDir = Path.Combine(Config.InputDirectory, day.Year.ToString());
 
             // Complain if the directory doesn't exist.
             if (!Directory.Exists(inputDir)) {
