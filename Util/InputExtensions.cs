@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Advent.Util {
+﻿namespace Advent.Util {
     /// <summary>
     /// Extension methods to help with formatting puzzle input into different forms
     /// </summary>
@@ -12,10 +8,23 @@ namespace Advent.Util {
                 StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
+        public static IEnumerable<string> AsLines(this string input, bool trim) {
+            if (trim) { return input.AsLines(); }
+
+            return input.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
         public static IEnumerable<string> SplitOnBlankLines(this string input) {
-            input = input.Replace("\r\n", "\n");
-            return input.Split("\n\n",
-                StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            return input.Replace("\r\n", "\n")
+                        .Split("\n\n", 
+                            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        }
+
+        public static IEnumerable<string> SplitOnBlankLines(this string input, bool trim) {
+            if (trim) { return input.SplitOnBlankLines(); }
+
+            return input.Replace("\r\n", "\n")
+                        .Split("\n\n", StringSplitOptions.RemoveEmptyEntries);
         }
 
         /// <summary>
