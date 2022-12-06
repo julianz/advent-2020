@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Advent.Util {
+﻿namespace Advent.Util {
     /// <summary>
     /// Extension methods for working with strings.
     /// </summary>

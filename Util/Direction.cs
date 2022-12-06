@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Advent.Util {
+﻿namespace Advent.Util {
     public enum Direction {
         Up,
         Down,

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-
-namespace Advent.Util {
+﻿namespace Advent.Util {
     /// <summary>
     /// Extension methods for working with numbers.
     /// </summary>
