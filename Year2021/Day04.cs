@@ -1,3 +1,5 @@
+using static MoreLinq.Extensions.TakeEveryExtension;
+
 namespace Advent.Year2021 {
     [Day(2021, 4)]
     public class Day04 : DayBase {

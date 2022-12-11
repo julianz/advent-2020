@@ -1,3 +1,5 @@
+using static MoreLinq.Extensions.ForEachExtension;
+
 namespace Advent.Year2022 {
     [Day(2022, 5)]
     public class Day05 : DayBase {

@@ -1,4 +1,6 @@
-﻿namespace Advent.Year2020 {
+﻿using static MoreLinq.Extensions.ForEachExtension;
+
+namespace Advent.Year2020 {
     [Day(2020, 7)]
     public class Day07 : DayBase {
         Dictionary<string, HashSet<string>> Bags = new();

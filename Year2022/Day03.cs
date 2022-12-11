@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using static MoreLinq.Extensions.BatchExtension;
 
 namespace Advent.Year2022 {
     [Day(2022, 3)]
